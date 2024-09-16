@@ -5,13 +5,40 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { WalletIcon, TreeStructure, Image, Upload, Coins } from "lucide-react";
+import { useWallet, WalletModalButton } from "@solana/wallet-adapter-react";
+import { useConnection } from "@solana/wallet-adapter-react";
+import { useEffect, useState } from "react";
+import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 
-export default function Component() {
+export default function CompressedNFTCreator() {
+  const { connection } = useConnection();
+  const { publicKey, sendTransaction, connected } = useWallet();
+  const [airdropTxId, setAirdropTxId] = useState<string | null>(null);
+
+  // Airdrop SOL (devnet)
+  const handleAirdropSOL = async () => {
+    if (!publicKey) {
+      alert("Please connect your wallet first.");
+      return;
+    }
+
+    try {
+      const airdropSignature = await connection.requestAirdrop(publicKey, 2 * LAMPORTS_PER_SOL);
+      await connection.confirmTransaction(airdropSignature, "confirmed");
+      setAirdropTxId(airdropSignature);
+      alert("Airdropped 2 SOL successfully.");
+    } catch (error) {
+      console.error("Airdrop failed:", error);
+      alert("Airdrop failed.");
+    }
+  };
+
   return (
     <div className="w-full max-w-3xl mx-auto p-6 space-y-6">
       <h1 className="text-3xl font-bold text-center mb-6">Compressed NFT Minting Guide</h1>
-      
+
       <Accordion type="single" collapsible className="w-full">
+        {/* Step 1: Connect Wallet */}
         <AccordionItem value="step1">
           <AccordionTrigger>
             <div className="flex items-center space-x-2">
@@ -22,12 +49,32 @@ export default function Component() {
           <AccordionContent>
             <p className="mb-4">Connect your wallet to get started. You may need to airdrop some SOL if you're on devnet.</p>
             <div className="flex flex-col space-y-2">
-              <Button>Connect Wallet</Button>
-              <Button variant="outline">Airdrop SOL (Devnet)</Button>
+              {connected ? (
+                <p className="text-green-600">Wallet connected: {publicKey?.toBase58()}</p>
+              ) : (
+                <WalletModalButton>Connect Wallet</WalletModalButton>
+              )}
+              <Button variant="outline" onClick={handleAirdropSOL} disabled={!connected}>
+                Airdrop SOL (Devnet)
+              </Button>
+              {airdropTxId && (
+                <p className="text-sm text-gray-500">
+                  Airdrop Tx:{" "}
+                  <a
+                    href={`https://explorer.solana.com/tx/${airdropTxId}?cluster=devnet`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline text-blue-600"
+                  >
+                    View on Explorer
+                  </a>
+                </p>
+              )}
             </div>
           </AccordionContent>
         </AccordionItem>
 
+        {/* Step 2: Create or set Merkle tree */}
         <AccordionItem value="step2">
           <AccordionTrigger>
             <div className="flex items-center space-x-2">
@@ -42,6 +89,7 @@ export default function Component() {
           </AccordionContent>
         </AccordionItem>
 
+        {/* Step 3: Create or set Collection NFT */}
         <AccordionItem value="step3">
           <AccordionTrigger>
             <div className="flex items-center space-x-2">
@@ -74,11 +122,12 @@ export default function Component() {
           </AccordionContent>
         </AccordionItem>
 
+        {/* Step 4: Mint cNFTs to addresses */}
         <AccordionItem value="step4">
           <AccordionTrigger>
             <div className="flex items-center space-x-2">
               <Coins className="w-6 h-6" />
-              <span>4. Mint cNFTs to addresses</span>
+              <span>4. Mint CNFTs to addresses</span>
             </div>
           </AccordionTrigger>
           <AccordionContent>
@@ -94,11 +143,11 @@ export default function Component() {
                 <Button className="mt-2">Upload Metadata</Button>
               </div>
               <div>
-                <Label htmlFor="cnft-name">cNFT Name</Label>
+                <Label htmlFor="cnft-name">CNFT Name</Label>
                 <Input id="cnft-name" placeholder="Enter cNFT name" />
               </div>
               <div>
-                <Label htmlFor="cnft-symbol">cNFT Symbol</Label>
+                <Label htmlFor="cnft-symbol">CNFT Symbol</Label>
                 <Input id="cnft-symbol" placeholder="Enter cNFT symbol" />
               </div>
               <div>

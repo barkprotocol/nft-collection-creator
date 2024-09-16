@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';  // or 'next/router' depending on your Next.js version
 import { Button } from "@/components/ui/button";
 import { Zap, Shield, Coins } from "lucide-react";
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
@@ -19,6 +20,7 @@ const wallets = [
 
 export default function LandingPage() {
   const [mounted, setMounted] = useState(false);
+  const router = useRouter();  // Initialize useRouter for navigation
 
   useEffect(() => {
     setMounted(true);
@@ -36,11 +38,11 @@ export default function LandingPage() {
                   <div className="text-2xl font-bold text-gray-800">CNFT Creator</div>
                 </div>
                 <div className="flex space-x-2 sm:space-x-4">
-                  <Button variant="ghost" className="text-sm sm:text-base" aria-label="Home">Home</Button>
-                  <Button variant="ghost" className="text-sm sm:text-base" aria-label="Features">Features</Button>
-                  <Button variant="ghost" className="text-sm sm:text-base" aria-label="Use Cases">Use Cases</Button>
-                  <Button variant="ghost" className="text-sm sm:text-base" aria-label="About">About</Button>
-                  <Button variant="ghost" className="text-sm sm:text-base" aria-label="FAQ">FAQ</Button>
+                  <Button variant="ghost" className="text-sm sm:text-base" aria-label="Home" onClick={() => router.push('/')}>Home</Button>
+                  <Button variant="ghost" className="text-sm sm:text-base" aria-label="Features" onClick={() => router.push('/pages/features')}>Features</Button>
+                  <Button variant="ghost" className="text-sm sm:text-base" aria-label="Use Cases" onClick={() => router.push('/pages/use-cases')}>Use Cases</Button>
+                  <Button variant="ghost" className="text-sm sm:text-base" aria-label="About" onClick={() => router.push('/pages/about')}>About</Button>
+                  <Button variant="ghost" className="text-sm sm:text-base" aria-label="FAQ" onClick={() => router.push('/pages/faq')}>FAQ</Button>
                   <WalletConnectButton aria-label="Connect Wallet" />
                 </div>
               </nav>
