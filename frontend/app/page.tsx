@@ -1,101 +1,105 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useState, useEffect } from 'react';
+import { Button } from "@/components/ui/button";
+import { Zap, Shield, Coins } from "lucide-react";
+import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
+import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
+import { PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets';
+import { clusterApiUrl } from '@solana/web3.js';
+import WalletConnectButton from "@/components/ui/wallet-connect-button";
+import '@solana/wallet-adapter-react-ui/styles.css';
+
+const logoUrl = "https://ucarecdn.com/b065ba1f-6279-4677-ae8f-0ebc1facb68d/bark_icon.png";
+
+const wallets = [
+  new PhantomWalletAdapter(),
+  new SolflareWalletAdapter(),
+];
+
+export default function LandingPage() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <ConnectionProvider endpoint={clusterApiUrl('devnet')}>
+      <WalletProvider wallets={wallets} autoConnect>
+        <WalletModalProvider>
+          <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+            <header className="container mx-auto px-4 py-6 sm:py-8">
+              <nav className="flex flex-wrap justify-between items-center">
+                <div className="flex items-center">
+                  <img src={logoUrl} alt="CNFT Creator Logo" className="h-10 w-10 mr-2" />
+                  <div className="text-xl sm:text-2xl font-bold text-gray-800">CNFT Creator</div>
+                </div>
+                <div className="flex space-x-2 sm:space-x-4">
+                  <Button variant="ghost" className="text-sm sm:text-base">Home</Button>
+                  <Button variant="ghost" className="text-sm sm:text-base">Features</Button>
+                  <Button variant="ghost" className="text-sm sm:text-base">Use Cases</Button>
+                  <Button variant="ghost" className="text-sm sm:text-base">About</Button>
+                  <Button variant="ghost" className="text-sm sm:text-base">FAQ</Button>
+                  {mounted && <WalletConnectButton />}
+                </div>
+              </nav>
+            </header>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+            <main>
+              <section className="container mx-auto px-4 py-10 sm:py-16 lg:py-20 text-center">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display text-gray-900 mb-4 sm:mb-6 lg:mb-8">
+                  Create Compressed NFT Collections with Ease
+                </h1>
+                <p className="text-lg sm:text-xl lg:text-2xl text-gray-600 mb-6 sm:mb-8 lg:mb-10 max-w-3xl mx-auto">
+                  Our Compressed NFT Collection Creator empowers you to mint thousands of NFTs at a fraction of the cost. Unleash your creativity and scale your projects like never before.
+                </p>
+                <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                  <Button size="lg" variant="default" className="text-lg bg-gray-800 text-white hover:bg-gray-700">
+                    Select Wallet
+                  </Button>
+                  <Button size="lg" variant="default" className="text-lg">Create CNFT</Button>
+                </div>
+              </section>
+
+              <section className="bg-gray-100 py-10 sm:py-16 lg:py-20">
+                <div className="container mx-auto px-4">
+                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center text-gray-800 mb-8 sm:mb-12">
+                    Key Features
+                  </h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <FeatureCard
+                      icon={<Zap className="h-8 w-8 text-blue-500" />}
+                      title="Cost-Effective"
+                      description="Mint thousands of NFTs with reduced costs."
+                    />
+                    <FeatureCard
+                      icon={<Shield className="h-8 w-8 text-green-500" />}
+                      title="Secure"
+                      description="Ensure the security and authenticity of your NFTs."
+                    />
+                    <FeatureCard
+                      icon={<Coins className="h-8 w-8 text-yellow-500" />}
+                      title="Efficient"
+                      description="Streamline the creation and management of your NFT collections."
+                    />
+                  </div>
+                </div>
+              </section>
+            </main>
+          </div>
+        </WalletModalProvider>
+      </WalletProvider>
+    </ConnectionProvider>
+  );
+}
+
+function FeatureCard({ icon, title, description }: { icon: React.ReactNode; title: string; description: string; }) {
+  return (
+    <div className="bg-white p-6 rounded-lg shadow-md text-center">
+      <div className="flex justify-center mb-4">{icon}</div>
+      <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-2">{title}</h3>
+      <p className="text-gray-600 text-sm sm:text-base">{description}</p>
     </div>
   );
 }
