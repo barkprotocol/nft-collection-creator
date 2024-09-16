@@ -28,20 +28,20 @@ export default function LandingPage() {
     <ConnectionProvider endpoint={clusterApiUrl('devnet')}>
       <WalletProvider wallets={wallets} autoConnect>
         <WalletModalProvider>
-          <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+          <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
             <header className="container mx-auto px-4 py-6 sm:py-8">
               <nav className="flex flex-wrap justify-between items-center">
                 <div className="flex items-center">
                   <img src={logoUrl} alt="CNFT Creator Logo" className="h-10 w-10 mr-2" />
-                  <div className="text-xl sm:text-2xl font-bold text-gray-800">CNFT Creator</div>
+                  <div className="text-2xl font-bold text-gray-800">CNFT Creator</div>
                 </div>
                 <div className="flex space-x-2 sm:space-x-4">
-                  <Button variant="ghost" className="text-sm sm:text-base">Home</Button>
-                  <Button variant="ghost" className="text-sm sm:text-base">Features</Button>
-                  <Button variant="ghost" className="text-sm sm:text-base">Use Cases</Button>
-                  <Button variant="ghost" className="text-sm sm:text-base">About</Button>
-                  <Button variant="ghost" className="text-sm sm:text-base">FAQ</Button>
-                  {mounted && <WalletConnectButton />}
+                  <Button variant="ghost" className="text-sm sm:text-base" aria-label="Home">Home</Button>
+                  <Button variant="ghost" className="text-sm sm:text-base" aria-label="Features">Features</Button>
+                  <Button variant="ghost" className="text-sm sm:text-base" aria-label="Use Cases">Use Cases</Button>
+                  <Button variant="ghost" className="text-sm sm:text-base" aria-label="About">About</Button>
+                  <Button variant="ghost" className="text-sm sm:text-base" aria-label="FAQ">FAQ</Button>
+                  <WalletConnectButton aria-label="Connect Wallet" />
                 </div>
               </nav>
             </header>
@@ -49,39 +49,41 @@ export default function LandingPage() {
             <main>
               <section className="container mx-auto px-4 py-10 sm:py-16 lg:py-20 text-center">
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display text-gray-900 mb-4 sm:mb-6 lg:mb-8">
-                  Create Compressed NFT Collections with Ease
+                  Simplify NFT Collection Creation
                 </h1>
                 <p className="text-lg sm:text-xl lg:text-2xl text-gray-600 mb-6 sm:mb-8 lg:mb-10 max-w-3xl mx-auto">
-                  Our Compressed NFT Collection Creator empowers you to mint thousands of NFTs at a fraction of the cost. Unleash your creativity and scale your projects like never before.
+                  Create and manage your NFT collections effortlessly and affordably with our advanced tools. Unlock new levels of creativity and scalability.
                 </p>
                 <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-                  <Button size="lg" variant="default" className="text-lg bg-gray-800 text-white hover:bg-gray-700">
-                    Select Wallet
+                  <Button size="lg" variant="default" className="text-lg bg-gray-900 text-white hover:bg-gray-700">
+                    Read Documentation
                   </Button>
-                  <Button size="lg" variant="default" className="text-lg">Create CNFT</Button>
+                  <Button size="lg" variant="default" className="text-lg bg-yellow-500 text-white hover:bg-yellow-400">
+                    Start Your CNFT Journey
+                  </Button>
                 </div>
               </section>
 
               <section className="bg-gray-100 py-10 sm:py-16 lg:py-20">
                 <div className="container mx-auto px-4">
                   <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center text-gray-800 mb-8 sm:mb-12">
-                    Key Features
+                    Core Features
                   </h2>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     <FeatureCard
-                      icon={<Zap className="h-8 w-8 text-blue-500" />}
+                      icon={<Zap className="h-8 w-8 text-yellow-600" />}
                       title="Cost-Effective"
-                      description="Mint thousands of NFTs with reduced costs."
+                      description="Significantly reduce costs while minting large volumes of NFTs."
                     />
                     <FeatureCard
-                      icon={<Shield className="h-8 w-8 text-green-500" />}
+                      icon={<Shield className="h-8 w-8 text-yellow-600" />}
                       title="Secure"
-                      description="Ensure the security and authenticity of your NFTs."
+                      description="Ensure your NFTs' security and authenticity with advanced protocols."
                     />
                     <FeatureCard
-                      icon={<Coins className="h-8 w-8 text-yellow-500" />}
+                      icon={<Coins className="h-8 w-8 text-yellow-600" />}
                       title="Efficient"
-                      description="Streamline the creation and management of your NFT collections."
+                      description="Enhance the creation and management processes for your NFT collections."
                     />
                   </div>
                 </div>
@@ -94,9 +96,15 @@ export default function LandingPage() {
   );
 }
 
-function FeatureCard({ icon, title, description }: { icon: React.ReactNode; title: string; description: string; }) {
+interface FeatureCardProps {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+}
+
+function FeatureCard({ icon, title, description }: FeatureCardProps) {
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md text-center">
+    <div className="bg-white p-6 rounded-lg shadow-lg text-center">
       <div className="flex justify-center mb-4">{icon}</div>
       <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-2">{title}</h3>
       <p className="text-gray-600 text-sm sm:text-base">{description}</p>

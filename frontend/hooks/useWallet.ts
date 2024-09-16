@@ -1,7 +1,16 @@
 import { useContext, useEffect, useState } from 'react';
 import { WalletContext } from '@solana/wallet-adapter-react';
 
-export function useWallet() {
+interface UseWalletReturn {
+  wallet: any; // Replace `any` with the actual type if known
+  connect: () => Promise<void>;
+  connecting: boolean;
+  connected: boolean;
+  disconnect: () => Promise<void>;
+  error: string | null;
+}
+
+export function useWallet(): UseWalletReturn {
   const context = useContext(WalletContext);
 
   if (!context) {
@@ -13,7 +22,10 @@ export function useWallet() {
 
   useEffect(() => {
     if (wallet && !connected && !connecting) {
-      connect().catch(err => setError(err.message || 'Connection failed'));
+      connect().catch(err => {
+        const errorMessage = err.message || 'Connection failed';
+        setError(errorMessage);
+      });
     }
   }, [wallet, connect, connected, connecting]);
 

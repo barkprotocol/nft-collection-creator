@@ -1,5 +1,3 @@
-// components/ui/wallet-connect-button.tsx
-
 import { Button } from "@/components/ui/button";
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { useWallet } from '@/hooks/useWallet';
@@ -12,8 +10,8 @@ export default function WalletConnectButton() {
   }
 
   if (connected) {
-    return <Button variant="outline" onClick={() => disconnect()}>Connected</Button>;
+    return <Button variant="dark" onClick={() => disconnect()}>Disconnect</Button>;
   }
 
-  return <WalletMultiButton className="bg-primary text-primary-foreground hover:bg-primary/90" />;
+  return <WalletMultiButton className="bg-gray-800 text-white hover:bg-gray-700" />;
 }

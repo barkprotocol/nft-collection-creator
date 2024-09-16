@@ -1,15 +1,20 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  // Enable dark mode using a class, which allows manual toggling
   darkMode: ["class"],
+
+  // Paths to all files where Tailwind CSS classes will be used
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+
   theme: {
     extend: {
       colors: {
+        // Define custom colors using CSS variables
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {
@@ -52,12 +57,15 @@ const config: Config = {
         },
       },
       borderRadius: {
+        // Define custom border radius sizes
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
     },
   },
+
+  // Add Tailwind CSS Animate plugin for animation utilities
   plugins: [require("tailwindcss-animate")],
 };
 
