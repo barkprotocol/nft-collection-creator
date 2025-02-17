@@ -45,7 +45,7 @@
     "input-otp": "^1.2.4",
     "install": "^0.13.0",
     "lucide-react": "^0.441.0",
-    "next": "14.2.11",
+    "next": "14.2.24",
     "npm": "^10.8.3",
     "react": "^18",
     "react-dom": "^18",
